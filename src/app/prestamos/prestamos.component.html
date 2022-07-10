@@ -1,0 +1,91 @@
+<div class="card row m-5">
+  <div class="card-body">
+    <h5 class="card-title">REGISTRO DE PRÉSTAMOS</h5>
+    <div class="row">
+      <div class="form-group col-3">
+        <label for="nombreCliente">Cliente</label>
+        <input type="text" class="form-control" id="nombreCliente"
+          [(ngModel)]="nombreCliente" (keyup.enter)="buscarPrestamosCliente(nombreCliente)"
+          placeholder="Nombre de Cliente" maxlength="30">
+      </div>
+      <button type="button" class="btn btn-success col-1 mt-4"
+        (click)="buscarPrestamosCliente(nombreCliente)">Buscar</button>
+      <div class="form-group col-6"></div>
+      <button type="button" class="btn btn-primary col-2 mt-4"
+        data-toggle="modal" data-target="#modalAgregarPrestamo">Agregar Préstamo</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+         <tr>
+            <th scope="col">CLIENTE</th>
+            <th scope="col">MONTO DEL PRÉSTAMO</th>
+            <th scope="col">PLAZOS</th>
+            <th scope="col">ACCIONES</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let item of prestamos">
+            <td> {{item.nombre}} </td>
+            <td> {{item.monto}} </td>
+            <td> {{item.plazo}} </td>
+            <td>
+              <i class="fa fa-solid fa-bars" title="ver amortización"
+                (click)="obtenerReporte(item.nombre, item.id)"></i>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalAgregarPrestamo" tabindex="-1" role="dialog"
+  aria-labelledby="modalAgregarPrestamoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalAgregarPrestamoLabel">AGREGAR PRÉSTAMO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group col-5">
+            <label for="cliente">Cliente</label>
+            <select class="form-control" id="cliente" [(ngModel)]="clientePrestamo">
+              <option value="" disabled selected>Seleccionar Cliente</option>
+              <option *ngFor="let cliente of clientes; let i = index" [value]="clientes[i].id">
+                {{cliente.nombre}}
+              </option>
+            </select>
+          </div>
+          <div class="col-2"></div>
+          <div class="form-group col-5">
+            <label for="monto">Monto</label>
+            <select class="form-control" id="monto" [(ngModel)]="montoPrestamo">
+              <option value="" selected disabled>Seleccionar Monto</option>
+              <option *ngFor="let monto of montos; let i = index" [value]="montos[i].monto">
+                ${{monto.monto}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="form-group col-5">
+            <label for="plazo">Plazo</label>
+            <select class="form-control" id="plazo" [(ngModel)]="plazoPrestamo">
+              <option value="" selected disabled>Seleccionar Plazo</option>
+              <option *ngFor="let monto of montos; let i = index" [value]="montos[i].plazo">
+                {{monto.plazo}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="agregarPrestamo()">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
